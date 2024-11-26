@@ -11,6 +11,7 @@ const Header = () => {
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth.user);
+
   async function logout() {
     await api.post(`/user/logout`);
     dispatch(setUser(null));
@@ -58,7 +59,7 @@ const Header = () => {
             &times;
           </div>
           <div className="text-[15px] font-[Arial] text-left text-[#888888] cursor-pointer border-l-4 border-[#ffffff] hover:border-[#4d90fb] hover:bg-[#d3bfc731] hover:text-[#333]">
-            <Link className="text-inherit p-[10px] hover:text-[#333] hover:no-underline block" to="/account">
+            <Link className="text-inherit p-[10px] hover:text-[#333] hover:no-underline block" to="/account" onClick={() => setOpen(false)}>
               My account
             </Link>
           </div>

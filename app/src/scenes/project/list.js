@@ -8,6 +8,7 @@ import LoadingButton from "../../components/loadingButton";
 import ProgressBar from "../../components/ProgressBar";
 
 import api from "../../services/api";
+
 const ProjectList = () => {
   const [projects, setProjects] = useState(null);
   const [activeProjects, setActiveProjects] = useState(null);
@@ -35,7 +36,7 @@ const ProjectList = () => {
 
   return (
     <div className="w-full p-2 md:!px-8">
-      <Create onChangeSearch={handleSearch} />
+      <Create onChangeSearch={handleSearch} onProjectCreated={(newProject) => setProjects((prev) => [...prev, newProject])} /> {/*to handle the addition of the new project. */}
       <div className="py-3">
         {activeProjects.map((hit) => {
           return (
@@ -92,8 +93,10 @@ const Budget = ({ project }) => {
   return <ProgressBar percentage={width} max={budget_max_monthly} value={total} />;
 };
 
-const Create = ({ onChangeSearch }) => {
+//onProjectCreated prop to update the state in ProjectList.
+const Create = ({ onChangeSearch, onProjectCreated }) => {
   const [open, setOpen] = useState(false);
+  const history = useHistory();
 
   return (
     <div className="mb-[10px] ">
@@ -142,10 +145,11 @@ const Create = ({ onChangeSearch }) => {
               onSubmit={async (values, { setSubmitting }) => {
                 try {
                   values.status = "active";
-                  const res = await api.post("/project", values);
-                  if (!res.ok) throw res;
+                  const { data: newProject } = await api.post("/project", values); // Updated to get the new project data
+                  onProjectCreated(newProject); // Add the new project to the list
                   toast.success("Created!");
                   setOpen(false);
+                  history.push(`/project/${newProject._id}`); // Navigate to the new project page
                 } catch (e) {
                   console.log(e);
                   toast.error("Some Error!", e.code);

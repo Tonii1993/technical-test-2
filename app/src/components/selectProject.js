@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-
 import api from "../services/api";
 
 // eslint-disable-next-line react/display-name
-export default ({ value, active = true, onChange }) => {
+const SelectProject = ({ value, active = true, onChange }) => {
   const [projects, setProjects] = useState([]);
-  
+
   useEffect(() => {
     (async () => {
       let str = ``;
@@ -45,3 +44,5 @@ export default ({ value, active = true, onChange }) => {
     </div>
   );
 };
+
+export default SelectProject;

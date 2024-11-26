@@ -17,14 +17,14 @@ ChartJS.register(...registerables);
 
 export default function ProjectView() {
   const [project, setProject] = useState(null);
-  const [copied, setCopied] = React.useState(false);
+  const [copied, setCopied] = useState(false);
   const { id } = useParams();
   const history = useHistory();
 
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
-      setProject(u);
+      setProject(u[0]);
     })();
   }, []);
 
@@ -69,8 +69,8 @@ const ProjectDetails = ({ project }) => {
             <div className="w-full">
               <div className="flex justify-between gap-2">
                 <div className="flex gap-20">
-                  <span className="w-fit text-[20px] text-[#0C1024] font-bold">Nom du projet : </span>
-                  <span className="w-fit text-[20px] text-[#0C1024] font-bold">{project.name.toString()}</span>
+                  <span className="w-fit text-[20px] text-[#0C1024] font-bold">Name of the project : </span>
+                  <span className="w-fit text-[20px] text-[#0C1024] font-bold">{project.name}</span>
                 </div>
                 <div className="flex flex-1 flex-column items-end gap-3">
                   <Links project={project} />
@@ -274,7 +274,7 @@ const Links = ({ project }) => {
         </div>
       )}
       {project.links?.map((link) => (
-        <div className="group text-sm font-medium	text-blue-700 border-[1px] border-blue-700 rounded-full overflow-hidden">
+        <div key={link._id} className="group text-sm font-medium	text-blue-700 border-[1px] border-blue-700 rounded-full overflow-hidden">
           <a target="blank" href={link.url} className="break-words cursor-pointer text-blue-700 hover:text-white hover:bg-blue-700 flex hover:no-underline h-full">
             <div className="flex items-center bg-blue-700 py-1 px-2 rounded-r-full ">
               <IoIosLink className="group-hover:scale-110 text-white" />
